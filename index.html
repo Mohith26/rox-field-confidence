@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>People · Rox (concept: Field confidence)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js"></script>
+</head>
+<body>
+<div class="app">
+  <aside class="side">
+    <div class="side-top">
+      <div class="logo">
+        <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1.5c.5 5.6 3.9 9.9 10.5 10.5-6.6.6-10 4.9-10.5 10.5C11.5 16.9 8.1 12.6 1.5 12 8.1 11.4 11.5 7.1 12 1.5Z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+        <span>ROX</span>
+      </div>
+      <button class="icon-btn ghost" title="Collapse sidebar"><i data-lucide="panel-left"></i></button>
+    </div>
+    <nav class="nav">
+      <a><i data-lucide="house"></i>Home</a>
+      <a><i data-lucide="message-circle"></i>Chat</a>
+      <a><i data-lucide="workflow"></i>Automations</a>
+      <a><i data-lucide="user-search"></i>Outbound</a>
+      <div class="nav-sep"></div>
+      <a><i data-lucide="briefcase"></i>Accounts</a>
+      <a class="active"><i data-lucide="users"></i>People</a>
+      <a><i data-lucide="send"></i>Sequences</a>
+      <a><i data-lucide="calendar"></i>Meetings</a>
+      <a><i data-lucide="columns-4"></i>Opportunities</a>
+      <a><i data-lucide="chart-column-big"></i>Apps</a>
+    </nav>
+    <div class="side-bottom">
+      <div class="me"><span class="me-av">AM</span><div><div class="me-name">Alex Morgan</div><div class="me-org">Halcyon</div></div></div>
+    </div>
+  </aside>
+
+  <main class="main card">
+    <header class="page-head">
+      <div class="page-title"><span class="page-icon"><i data-lucide="users"></i></span><h1>People</h1></div>
+      <div class="head-actions">
+        <button class="btn"><i data-lucide="plus"></i>Add leads<i data-lucide="chevron-down" class="sm"></i></button>
+        <button class="icon-btn"><i data-lucide="ellipsis"></i></button>
+      </div>
+    </header>
+    <div class="tabs" id="tabs">
+      <button data-tab="contacts" class="on">Contacts</button>
+      <button data-tab="leads">Leads</button>
+      <button data-tab="lists">Lists</button>
+      <button data-tab="sources">Source reliability <span class="new">New</span></button>
+    </div>
+
+    <section id="view-contacts" class="view">
+      <div class="banner" id="banner"></div>
+      <div class="toolbar">
+        <label class="search"><i data-lucide="search"></i><input id="q" placeholder="Search..."></label>
+        <button class="btn sm-btn"><i data-lucide="list-filter"></i>Filter</button>
+        <button class="btn sm-btn"><i data-lucide="arrow-up-down"></i>Sort<i data-lucide="chevron-down" class="sm"></i></button>
+      </div>
+      <div class="pills" id="pills"></div>
+      <div class="table-wrap">
+        <table class="grid" id="grid">
+          <thead><tr>
+            <th class="c-check"><span class="cb"></span></th>
+            <th class="c-num"></th>
+            <th class="c-name">Name</th>
+            <th class="c-title">Title</th>
+            <th class="c-acct">Account</th>
+            <th class="c-conf">Confidence</th>
+            <th class="c-seen">Last seen</th>
+          </tr></thead>
+          <tbody id="rows"></tbody>
+        </table>
+      </div>
+      <div class="pager" id="pager"></div>
+    </section>
+
+    <section id="view-sources" class="view hidden"></section>
+    <section id="view-empty" class="view hidden"><div class="empty">This tab is unchanged in the concept. See <b>Contacts</b> and <b>Source reliability</b>.</div></section>
+
+    <footer class="foot">Unofficial concept demo by Mohith Gajjela. Not affiliated with Rox. Synthetic data.</footer>
+  </main>
+
+  <aside class="drawer card" id="drawer"></aside>
+</div>
+<div class="loading" id="loading"><div class="spin"></div><div>Resolving fields across 7 sources…</div></div>
+<script type="module" src="app.js"></script>
+</body>
+</html>

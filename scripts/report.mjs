@@ -1,0 +1,23 @@
+import { simulate, SOURCES, FIELDS, TRUST_ORDER } from '../core/simulate.js';
+import { analyze, selective } from '../core/resolve.js';
+import { agentImpact } from '../core/impact.js';
+const seed = Number(process.argv[2] || 20261110);
+const t0 = Date.now();
+const sim = simulate(seed);
+const a = analyze(sim, SOURCES.map(s => s.id), FIELDS, TRUST_ORDER);
+const pct = x => (100 * x).toFixed(1) + '%';
+console.log('seed', seed, 'people', sim.people.length, 'observations', sim.observations.length, 'items', a.N, 'ms', Date.now() - t0);
+console.log('accuracy', Object.fromEntries(Object.entries(a.acc).map(([k, v]) => [k, pct(v)])));
+console.log('errors: trust', a.N - Math.round(a.acc.trust * a.N), 'recent', a.N - Math.round(a.acc.recent * a.N), 'majority', a.N - Math.round(a.acc.majority * a.N), 'learned', a.N - Math.round(a.acc.learned * a.N));
+console.log('error reduction vs trust', pct(a.errorReduction), 'vs best rule (' + a.bestRule + ')', pct(a.errorReductionVsBestRule));
+for (const [f, b] of Object.entries(a.byField)) console.log(' ', f, 'n', b.n, 'learned', pct(b.learned / b.n), 'trust', pct(b.trust / b.n), 'recent', pct(b.recent / b.n), 'majority', pct(b.majority / b.n));
+console.log('contested items', a.contested.n, 'learned', pct(a.contested.learned / a.contested.n), 'trust', pct(a.contested.trust / a.contested.n));
+console.log('T', a.T.toFixed(2), 'ECE raw', a.calRaw.ece.toFixed(3), 'cal', a.calCal.ece.toFixed(3), 'train', a.nTrain, 'test', a.nTest);
+console.log('stale', a.stale);
+console.log('lambda (1/days)', Object.fromEntries(Object.entries(a.res.lambda).map(([k, v]) => [k, (1 / v).toFixed(0) + 'd'])));
+console.log('copies', a.res.copies.map(c => `${c.from}->${c.to} rate ${c.rate.toFixed(2)} p ${c.p.toFixed(3)} n ${c.n} agree ${c.agree} base ${c.base.toFixed(2)}`));
+for (const s of SOURCES) console.log(' A', s.id.padEnd(4), FIELDS.map(f => f + ' ' + (a.res.A[s.id][f] ?? NaN).toFixed(2)).join('  '), ' true acc', JSON.stringify(s.acc));
+for (const thr of [0.8, 0.9, 0.95]) { const r = selective(a.items, sim.truth, thr); console.log('conf>=' + thr, 'coverage', pct(r.coverage), 'acc', pct(r.acc)); }
+console.log('agent impact', agentImpact(sim, a));
+console.log('banner: differs from trust', a.items.filter(i => i.top !== i.trust.value).length, 'people differs', new Set(a.items.filter(i => i.top !== i.trust.value).map(i => i.pid)).size);
+console.log('unseen share', (100 * a.stale.unseen / a.N).toFixed(1) + '%', 'T', a.T.toFixed(2), 'ECE cal', (100*a.calCal.ece).toFixed(1), 'pts');
